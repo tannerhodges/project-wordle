@@ -1,4 +1,5 @@
 import React from 'react';
+import { NUM_OF_LETTERS_PER_WORD } from '../../constants';
 
 function GuessInput({ addGuess }) {
   const [guess, setGuess] = React.useState('');
@@ -18,8 +19,8 @@ function GuessInput({ addGuess }) {
         type="text"
         value={guess}
         required
-        pattern="[a-zA-Z]{5}"
-        title="5 letters"
+        pattern={`[a-zA-Z]{${NUM_OF_LETTERS_PER_WORD}}`}
+        title={`${NUM_OF_LETTERS_PER_WORD} letters`}
         onChange={(e) => setGuess(e.target.value.toUpperCase())}
       />
     </form>
