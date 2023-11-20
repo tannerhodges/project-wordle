@@ -17,27 +17,55 @@ const initialGuesses = range(NUM_OF_GUESSES_ALLOWED).map((index) => ({
 }));
 
 function Game() {
+  const [status, setStatus] = React.useState('playing');
   const [guesses, setGuesses] = React.useState(initialGuesses);
   const [numGuess, setNumGuess] = React.useState(0);
 
   function addGuess(guess) {
-    if (numGuess >= NUM_OF_GUESSES_ALLOWED) {
+    if (status !== 'playing') {
       console.warn('No more guesses!');
       return;
     }
+
     const nextGuesses = [...guesses];
     nextGuesses[numGuess] = {
       word: guess,
       id: crypto.randomUUID(),
     };
     setGuesses(nextGuesses);
-    setNumGuess(numGuess + 1);
+
+    const nextNumGuess = numGuess + 1;
+    setNumGuess(nextNumGuess);
+
+    if (guess === answer) {
+      setStatus('won');
+    } else if (nextNumGuess >= NUM_OF_GUESSES_ALLOWED) {
+      setStatus('lost');
+    }
   }
 
   return (
     <>
+      {status === 'won' && (
+        <div className="happy banner">
+          <p>
+            <strong>Congratulations!</strong> Got it in{' '}
+            <strong>
+              {numGuess} {numGuess > 1 ? 'guesses' : 'guess'}
+            </strong>
+            .
+          </p>
+        </div>
+      )}
+      {status === 'lost' && (
+        <div className="sad banner">
+          <p>
+            Sorry, the correct answer is <strong>{answer}</strong>.
+          </p>
+        </div>
+      )}
       <GuessResults guesses={guesses} answer={answer} />
-      <GuessInput addGuess={addGuess} />
+      <GuessInput addGuess={addGuess} disabled={status !== 'playing'} />
     </>
   );
 }
