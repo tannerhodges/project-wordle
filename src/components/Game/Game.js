@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { range, sample } from '../../utils';
-import { EMPTY_WORD, NUM_OF_GUESSES_ALLOWED } from '../../constants';
+import { NUM_OF_GUESSES_ALLOWED } from '../../constants';
 import { WORDS } from '../../data';
+import { range, sample } from '../../utils';
 import GuessResults from '../GuessResults/GuessResults';
 import GuessInput from '../GuessInput/GuessInput';
 
@@ -12,7 +12,7 @@ const answer = sample(WORDS);
 console.info({ answer });
 
 const initialGuesses = range(NUM_OF_GUESSES_ALLOWED).map((index) => ({
-  word: EMPTY_WORD,
+  word: '',
   id: crypto.randomUUID(),
 }));
 
@@ -36,7 +36,7 @@ function Game() {
 
   return (
     <>
-      <GuessResults guesses={guesses} />
+      <GuessResults guesses={guesses} answer={answer} />
       <GuessInput addGuess={addGuess} />
     </>
   );
